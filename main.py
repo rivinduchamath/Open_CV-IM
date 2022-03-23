@@ -20,5 +20,12 @@ cv2.imshow("HSV Image", imgGray)
 cv2.waitKey()
 cv2.destroyAllWindows()
 
-vid = cv2.VideoCapture("PATH")
-# while(vid.isOpened()):
+vid = cv2.VideoCapture("C:/Users/wogza/Downloads/q.mp4")
+while vid.isOpened():
+    ret, frame = vid.read()
+
+    originalVideo = cv2.resize(frame,(400, 400))
+    cv2.imshow("Original Video", originalVideo)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
