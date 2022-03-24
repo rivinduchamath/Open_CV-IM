@@ -2,71 +2,71 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-# # Get Color Image
-# # Get Black and white image as 0
-# # Get unchanged the row version as -1
-# img = cv2.imread("C:/Users/wogza/Pictures/aa.jpg", 1)
-# cv2.imshow("Input Window", img)
-# cv2.waitKey()
-# cv2.destroyAllWindows()
-#
-# # Change Colour Space
-# flags = [i for i in dir(cv2) if i.startswith('COLOR_')]
-# print(flags)
-#
-# # convert to gray
-# imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-# cv2.imshow("Gray Image", imgGray)
-#
-# # convert to HSV
-# imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-# cv2.imshow("HSV Image", imgGray)
-#
-# cv2.waitKey()
-# cv2.destroyAllWindows()
-#
-# # *************************************************************
-# # Lab 2
-# # *************************************************************
-#
-# # Load or read the video
-# vid = cv2.VideoCapture("C:/Users/wogza/Downloads/qq.mp4")
-#
-# # Take each Frame of the video
-# while vid.isOpened():
-#     ret, frame = vid.read()
-#
-#     # Converting BGR to HSV color-space
-#     hsvImg = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-#
-#     # Define lower rang and upper range of blue
-#     lower_Blue = np.array([110, 50, 50])
-#     upper_Blue = np.array([130, 255, 255])
-#
-#     # There should be HSV image for a range of blue colour
-#     blueMusk = cv2.inRange(hsvImg, lower_Blue, upper_Blue)
-#
-#     # Extract the blue object alone
-#     result = cv2.bitwise_and(frame, frame, mask=blueMusk)
-#
-#     # Display Original Video
-#     originalVideo = cv2.resize(frame, (400, 400))
-#     cv2.imshow("Original Video", originalVideo)
-#
-#     # Display Binary Video
-#     binaryVideo = cv2.resize(blueMusk, (400, 400))
-#     cv2.imshow("Binary Video", binaryVideo)
-#
-#     # Display masked / object Video
-#     maskedVideo = cv2.resize(result, (400, 400))
-#     cv2.imshow("Masked Video", maskedVideo)
-#
-#     # Condition to break the loop
-#     if cv2.waitKey(1) & 0xFF == ord('q'):
-#         break
-#
-# vid.release()
-# cv2.destroyAllWindows()
+# Get Color Image
+# Get Black and white image as 0
+# Get unchanged the row version as -1
+img = cv2.imread("C:/Users/wogza/Pictures/aa.jpg", 1)
+cv2.imshow("Input Window", img)
+cv2.waitKey()
+cv2.destroyAllWindows()
+
+# Change Colour Space
+flags = [i for i in dir(cv2) if i.startswith('COLOR_')]
+print(flags)
+
+# convert to gray
+imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+cv2.imshow("Gray Image", imgGray)
+
+# convert to HSV
+imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+cv2.imshow("HSV Image", imgGray)
+
+cv2.waitKey()
+cv2.destroyAllWindows()
+
+# *************************************************************
+# Lab 2
+# *************************************************************
+
+# Load or read the video
+vid = cv2.VideoCapture("C:/Users/wogza/Downloads/qq.mp4")
+
+# Take each Frame of the video
+while vid.isOpened():
+    ret, frame = vid.read()
+
+    # Converting BGR to HSV color-space
+    hsvImg = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    # Define lower rang and upper range of blue
+    lower_Blue = np.array([110, 50, 50])
+    upper_Blue = np.array([130, 255, 255])
+
+    # There should be HSV image for a range of blue colour
+    blueMusk = cv2.inRange(hsvImg, lower_Blue, upper_Blue)
+
+    # Extract the blue object alone
+    result = cv2.bitwise_and(frame, frame, mask=blueMusk)
+
+    # Display Original Video
+    originalVideo = cv2.resize(frame, (400, 400))
+    cv2.imshow("Original Video", originalVideo)
+
+    # Display Binary Video
+    binaryVideo = cv2.resize(blueMusk, (400, 400))
+    cv2.imshow("Binary Video", binaryVideo)
+
+    # Display masked / object Video
+    maskedVideo = cv2.resize(result, (400, 400))
+    cv2.imshow("Masked Video", maskedVideo)
+
+    # Condition to break the loop
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+vid.release()
+cv2.destroyAllWindows()
 
 # ******************************************
 # LAB 3
@@ -259,21 +259,22 @@ plt.imshow(img_neg)  # Negative Image
 plt.show()
 
 # Power_Low transformation to improve the contrast of a dark image
-img = cv2.imread("C:/Users/wogza/Pictures/aa.jpg", 1)
+img = cv2.imread('C:/Users/wogza/Pictures/aa.jpg', 0)
 gamma = 0.6
 img_gamma = np.power(img, gamma)
 
 # Display Original image
-plt.show(img, 'Gray')
+plt.imshow(img, 'gray')
 plt.show()
 
 # Display Negative image
-plt.show(img_gamma, 'Gray')
+plt.imshow(img_gamma, 'gray')
 plt.show()
 
 # Log transformation to improve the dynamic range of an image
-img = cv2.imread("C:/Users/wogza/Pictures/aa.jpg", 1)
+img = cv2.imread('C:/Users/wogza/Pictures/aa.jpg', 0)
 c = 255 / np.log(1 + np.max(img))
+np.seterr(divide='ignore')
 log_img = c * (np.log(img + 1))
 
 # specify the data type so that
@@ -287,4 +288,60 @@ plt.show()
 plt.imshow(log_img, 'gray')
 plt.show()
 
-histogram1 = cv2.calcHist([img], [0], None, [256], [0, 256])
+# Lab 6 *****************************************************
+
+# Image filtering using 2D convolution
+img = cv2.imread("C:/Users/wogza/Pictures/aa.jpg", 1)
+kernal = np.ones((5, 5), np.float32) / 25
+dst = cv2.filter2D(img, -1, kernal)
+
+result = np.hstack((img, dst))
+cv2.imshow('result', result)
+cv2.waitKey(0)
+
+# Image averaging using box filter
+img = cv2.imread("C:/Users/wogza/Pictures/aa.jpg")
+blur = cv2.blur(img, (5, 5))
+
+result = np.hstack((img, dst))
+cv2.imshow('result', result)
+
+cv2.waitKey(0)
+
+# Median filtering and gaussian filtering
+# apply various low pass filters to smooth images
+img = cv2.imread("C:/Users/wogza/Pictures/aa.jpg")
+median = cv2.medianBlur(img, 3)
+
+result = np.hstack((img, dst))
+cv2.imshow("result", result)
+
+cv2.waitKey(0)
+
+# apply various low pass filters to smooth images
+img = cv2.imread("C:/Users/wogza/Pictures/aa.jpg")
+blur = cv2.GaussianBlur(img, (11, 11), 0)
+
+result = np.hstack((img, dst))
+cv2.imshow("result", result)
+
+cv2.waitKey(0)
+
+# Application of image blurring
+
+# Load the image
+
+img = cv2.imread("C:/Users/wogza/Pictures/aa.jpg")
+
+# create custom kernel of size 15*15 and apply to the input image
+kernel = np.ones((15, 15), np.float32) / 25
+
+dst = cv2.filter2D(img, -1, kernal)
+
+# Apply threshold operator to highlight the largest object
+res, thresh = cv2.threshold(img, 120, 255, cv2.THRESH_BINARY)
+
+result = np.hstack((img, dst, thresh))
+cv2.imshow('result', result)
+
+cv2.waitKey(0)
