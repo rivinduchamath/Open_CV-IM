@@ -116,3 +116,37 @@ plt.plot(histr1)
 plt.plot(histr2)
 plt.plot(histr3)
 plt.show()
+
+# BGR histograms Matplotlib
+img = cv2.imread("C:/Users/wogza/Pictures/aa.jpg", 1)
+b, g, r = cv2.split(img)
+
+plt.hist(b.ravel(), 256, [0, 256])
+plt.hist(g.ravel(), 256, [0, 256])
+plt.hist(r.ravel(), 256, [0, 256])
+
+plt.show()
+
+# application of mask
+img = cv2.imread("C:/Users/wogza/Pictures/aa.jpg", 0)
+plt.imshow(img, "gray")
+plt.show()
+
+# Create a mask
+mask = np.zeros(img.shape[:2], np.uint8)
+mask[50:400, 250:600] = 255
+
+mask_img = cv2.bitwise_and(img, img, mask=mask)
+
+# Calculate the histogram with mask and without mask
+hist_full = cv2.calcHist([img], [0], None, [256], [0, 256])
+hist_mask = cv2.calcHist([img], [0], None, [256], [0, 256])
+
+# Display Image
+plt.subplot(221), plt.imshow(img, 'gray')
+plt.subplot(222), plt.imshow(mask, 'gray')
+plt.subplot(223), plt.imshow(mask_img, 'gray')
+plt.subplot(224), plt.plot(hist_full), plt.plot(hist_full)
+
+plt.xlim([0, 255])
+plt.show()
